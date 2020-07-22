@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Search from './components/Search';
+import Result from './components/Result';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state ={
+    term: '',
+    images: []
+  }
+
+  //arrow funtion
+  requestApi = () => {
+    const term = this.state.term
+    const url=`https://pixabay.com/api/?key=17574040-6c3dd872553670ee8635c1238&q=${term}`;
+    // console.log(url);
+    fetch(url)
+      .then(response => response.json())
+      .then(result => this.setState({images : result.hits}))
+  }
+
+  dataSearch = (term) => {
+    this.setState({
+      term
+    }, () => {
+      this.requestApi();
+    })
+  }
+
+  render(){
+    return (
+      <div className="app container">
+        <div className="jumbotron">
+          <p className="lead text-center">Search Images</p>
+          <Search
+            dataSearch={this.dataSearch}
+          />
+        </div>
+        <Result />
+      </div>
+    );
+  }
 }
 
 export default App;
