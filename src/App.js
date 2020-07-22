@@ -6,9 +6,37 @@ class App extends Component {
 
   state ={
     term: '',
-    images: []
+    images: [],
+    page: ''
   }
 
+  beforePage = () => {
+    //read state of current page
+    let page = this.state.page;
+
+    if(page === 1) return null;
+
+    //increse page
+    page -= 1;
+
+    //change state
+    this.setState({
+      page
+    })
+  }
+
+  afterPage = () => {
+    //read state of current page
+    let page = this.state.page;
+
+    //increse page
+    page += 1;
+
+    //change state
+    this.setState({
+      page
+    })
+  }
   //arrow funtion
   requestApi = () => {
     const term = this.state.term
@@ -21,7 +49,8 @@ class App extends Component {
 
   dataSearch = (term) => {
     this.setState({
-      term
+      term: term,
+      page: 1
     }, () => {
       this.requestApi();
     })
@@ -36,9 +65,13 @@ class App extends Component {
             dataSearch={this.dataSearch}
           />
         </div>
-        <Result
-          images = {this.state.images}
-        />
+        <div className="row justify-content-center">
+          <Result
+            images = {this.state.images}
+            beforePage={this.beforePage}
+            afterPage={this.afterPage}
+          />
+        </div>
       </div>
     );
   }
