@@ -10,6 +10,11 @@ class App extends Component {
     page: ''
   }
 
+  scroll = () => {
+    const element = document.querySelector('.jumbotron');
+    element.scrollIntoView('smooth', 'start')
+  }
+
   beforePage = () => {
     //read state of current page
     let page = this.state.page;
@@ -22,6 +27,9 @@ class App extends Component {
     //change state
     this.setState({
       page
+    }, () => {
+      this.requestApi();
+      this.scroll();
     })
   }
 
@@ -35,12 +43,17 @@ class App extends Component {
     //change state
     this.setState({
       page
+    }, () => {
+      this.requestApi();
+      this.scroll();
     })
   }
   //arrow funtion
   requestApi = () => {
-    const term = this.state.term
-    const url=`https://pixabay.com/api/?key=17574040-6c3dd872553670ee8635c1238&q=${term}`;
+    const term = this.state.term;
+    const page = this.state.page;
+    const url=`https://pixabay.com/api/?key=17574040-6c3dd872553670ee8635c1238&q=${term}
+    &per_page=30&page=${page}`;
     // console.log(url);
     fetch(url)
       .then(response => response.json())
