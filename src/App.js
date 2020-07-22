@@ -36,7 +36,9 @@ class App extends Component {
             dataSearch={this.dataSearch}
           />
         </div>
-        <Result />
+        <Result
+          images = {this.state.images}
+        />
       </div>
     );
   }
